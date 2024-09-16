@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { stylesForForm } from '../utils/niubizUndokedFormMount'
+import { stylesForForm } from '../../utils/niubizUndokedFormMount'
 
 const NiubizUndockedForm = () => {
   const [robertito, setRobertito] = useState('')

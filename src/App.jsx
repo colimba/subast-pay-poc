@@ -1,27 +1,23 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { useDispatch } from 'react-redux'
-import InitialDataForm from './components/InitialDataForm'
-import PaymentForm from './components/PaymentForm'
-import StatusDialog from './components/StatusDialog'
-import useNiubizScript from './hooks/useNiubisScript'
-import { setNiubizScriptMounted } from './features/globals/globalSlice'
+import Home from './components/Home'
+import PaymentCallback from './components/buttonForm/PaymentCallback'
 
 function App() {
-  const dispatch = useDispatch()
-  const notifyScriptMounted = () => dispatch(setNiubizScriptMounted(true))
-
-  const isScriptLoaded = useNiubizScript(notifyScriptMounted)
-
   return (
-    <div className="App">
-      <div>
+    <Router>
+      <div className="App">
         <h1 className="nes-text is-primary">niubiz integration POC</h1>
-        <InitialDataForm />
-        {isScriptLoaded && <PaymentForm />}
-        <StatusDialog />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/paymentCallback/:id=" element={<PaymentCallback />} />
+          {/* <Route path="/success" element={<Success />} /> */}
+          <Route path="/success" element={<div>success</div>}/>
+          <Route path="/failure" element={<div>failure</div>}/>
+        </Routes>
+        <p className="read-the-docs">Power by TechHouse</p>
       </div>
-      <p className="read-the-docs">Power by TechHouse</p>
-    </div>
+    </Router>
   )
 }
 

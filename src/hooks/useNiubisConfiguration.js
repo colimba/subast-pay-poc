@@ -8,16 +8,20 @@ const useNiubisConfiguration = () => {
 
   useEffect(() => {
     if (sessionKey && amount) {
-      window.payform.setConfiguration({
-        sessionkey: sessionKey,
+      window?.VisanetCheckout.configure({
+        action: 'https://d7fd-24-232-47-195.ngrok-free.app/paymentCallback', // modificar el id para que sea dinamico
+        method: 'POST',
+        sessiontoken: sessionKey,
         channel: 'web',
         merchantid: import.meta.env.VITE_NIUBIZ_MERCHANT_ID,
         purchasenumber: '10000000001',
         amount: amount,
-        language: 'es',
-        font: 'https://fonts.googleapis.com/css?family=Montserrat:400&display=swap',
+        expirationminutes: 5,
+        timeouturl: 'https://localhost:5173/urlTimeout',
+        merchantname: 'subastop'
       })
       setIsConfigured(true)
+      window?.VisanetCheckout.open();
     }
   }, [sessionKey, amount])
   return isConfigured

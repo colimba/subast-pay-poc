@@ -14,11 +14,11 @@ const useNiubizScript = (callback) => {
       console.log(import.meta.env.VITE_NIUBIZ_URL)
       script.src = import.meta.env.VITE_NIUBIZ_URL
       script.id = NIUBIZ_DOM_ID
-      document.body.appendChild(script)
-      script.onload = () => {
+      // document.body.appendChild(script)
+      // script.onload = () => {
         setIsScriptLoaded(true)
-        if (callback) callback()
-      }
+        // if (callback) callback()
+      // }
     }
     return () => destroyNiubizScript
   }, [callback])

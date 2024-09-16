@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { setStatus, setToken } from '../features/payment/sessionSlice'
-import { setAmountToPay } from '../features/payment/paymentSlice'
+import { setAmountToPay, setPayerOpportunityId, setPayerUserId } from '../features/payment/paymentSlice'
 
 const InitialDataForm = () => {
   const [amount, setAmount] = useState('')
@@ -10,17 +10,21 @@ const InitialDataForm = () => {
   const [opportunityId, setOpportunityId] = useState('')
   const dispatch = useDispatch()
 
+  const channel = 'web'
+
   const handlePayment = async () => {
     try {
       dispatch(setStatus('processing'))
       const response = await axios.post(
-        'http://localhost:9002/v1/coinmarket/authenticate',
-        { userId, amount },
+        '/v1/coinmarket/authenticate',
+        { userId, opportunityId, amount, channel },
         { headers: { 'Content-Type': 'application/json' } }
       )
       dispatch(setStatus('success'))
       dispatch(setToken(response.data))
       dispatch(setAmountToPay(amount))
+      dispatch(setPayerUserId(userId))
+      dispatch(setPayerOpportunityId(opportunityId))
     } catch (error) {
       dispatch(setStatus('failed'))
       console.error('Payment failed:', error)
