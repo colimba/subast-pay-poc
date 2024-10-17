@@ -5,7 +5,8 @@ export const paymentSlice = createSlice({
   initialState: {
     amountToPay: null,
     userId: null,
-    opportunityId: null
+    opportunityId: null,
+    acquisitionType: null
   },
   reducers: {
     setAmountToPay: (state, action) => {
@@ -17,6 +18,9 @@ export const paymentSlice = createSlice({
     setPayerOpportunityId: (state, action) => {
       state.opportunityId = action.payload
     },
+    setAcquisitionType: (state, action) => {
+      state.acquisitionType = action.payload
+    }
   },
 })
 

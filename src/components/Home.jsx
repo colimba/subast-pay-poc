@@ -5,10 +5,14 @@ import InitialDataForm from './InitialDataForm'
 import StatusDialog from './StatusDialog'
 import NiubuzButtonForm from './buttonForm/NiubuzButtonForm'
 import Biz from './buttonForm/Biz'
+import { useEffect, useState } from 'react'
 
 const Home = () => {
   const transactionId = useSelector(
     (state) => state.session.token?.transactionId
+  )
+  const operationId = useSelector(
+    (state) => state.session.token?.operationId
   )
   const amount = useSelector((state) => state.payment.amountToPay)
   const userId = useSelector((state) => state.payment.userId)
@@ -17,11 +21,14 @@ const Home = () => {
   const notifyScriptMounted = () => dispatch(setNiubizScriptMounted(true))
 
   const isScriptLoaded = useNiubizScript(notifyScriptMounted)
+  const [callbackUrl, setCallbackUrl] = useState('')
 
-  const callbackUrl = `/v1/coinmarket/create-payment?transactionId=${transactionId}&amount=${amount}&userId=${userId}&opportunityId=${opportunityId}`
+  useEffect(()=>{
+    setCallbackUrl(`/v1/coinmarket/create-payment?operationId=${operationId}&amount=${amount}&userId=${userId}`)
+  }, [transactionId, amount, userId, opportunityId])
 
   const handleSubmit = () => {
-    <>
+    ;<>
       <p>loading...</p>
     </>
   }
@@ -29,7 +36,14 @@ const Home = () => {
   return (
     <div>
       <InitialDataForm />
-      <form id="payment-form" action={callbackUrl} method="post" style={{marginTop: 20}}></form>
+      <div id='alguito'>
+        <form
+          id="payment-form"
+          action={callbackUrl}
+          method="post"
+          style={{ marginTop: 20 }}
+        ></form>
+      </div>
       <Biz />
       {/* {isScriptLoaded && <NiubuzButtonForm />} */}
       {/* {isScriptLoaded && <PaymentFormUndocked />} */}

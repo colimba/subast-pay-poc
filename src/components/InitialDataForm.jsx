@@ -7,6 +7,7 @@ import { setAmountToPay, setPayerOpportunityId, setPayerUserId } from '../featur
 const InitialDataForm = () => {
   const [amount, setAmount] = useState('')
   const [userId, setUserId] = useState('')
+  const [acquisitionType, setAcquisitionType] = useState('')
   const [opportunityId, setOpportunityId] = useState('')
   const dispatch = useDispatch()
 
@@ -17,7 +18,7 @@ const InitialDataForm = () => {
       dispatch(setStatus('processing'))
       const response = await axios.post(
         '/v1/coinmarket/authenticate',
-        { userId, opportunityId, amount, channel },
+        { userId, opportunityId, acquisitionType, amount, channel },
         { headers: { 'Content-Type': 'application/json' } }
       )
       dispatch(setStatus('success'))
@@ -25,6 +26,7 @@ const InitialDataForm = () => {
       dispatch(setAmountToPay(amount))
       dispatch(setPayerUserId(userId))
       dispatch(setPayerOpportunityId(opportunityId))
+      dispatch(setAcquisitionType(acquisitionType))
     } catch (error) {
       dispatch(setStatus('failed'))
       console.error('Payment failed:', error)
@@ -65,6 +67,17 @@ const InitialDataForm = () => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
+            autoComplete='off'
+          />
+        </div>
+        <div className="nes-field is-inline" style={{ marginTop: 8 }}>
+          <input
+            type="text"
+            id="name_field"
+            className="nes-input"
+            value={acquisitionType}
+            onChange={(e) => setAcquisitionType(e.target.value)}
+            placeholder="PAY_2_PLAY_PARTICIPATION | CHECKIN_PARTICIPATION | ACTIVATION_FEE"
             autoComplete='off'
           />
         </div>
